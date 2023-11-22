@@ -1,2 +1,2 @@
 # BE-wish
-cart and wish-product server
+productInCart and wish-product server
