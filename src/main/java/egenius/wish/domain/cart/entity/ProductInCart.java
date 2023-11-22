@@ -9,7 +9,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Cart extends BaseTimeEntity {
+@ToString
+public class ProductInCart extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +20,7 @@ public class Cart extends BaseTimeEntity {
     private String userEmail;
 
     @Column(name = "product_detail_id")
-    private Long product_detail_id;
+    private Long productDetailId;
 
     @Column(name = "count")
     private Integer count;

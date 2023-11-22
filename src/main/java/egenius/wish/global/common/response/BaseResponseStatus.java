@@ -20,9 +20,11 @@ public enum BaseResponseStatus {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, false, 900, "Internal server error"),
 
     /**
-     * 6000 : Settlement Service Error
+     * 5000 : Cart & WishProductList Service Error
      */
-    NO_DATA(HttpStatus.BAD_REQUEST, false, 6004, "존재하지 않는 정보입니다"),
+    NO_DATA(HttpStatus.BAD_REQUEST, false, 6001, "존재하지 않는 정보입니다"),
+    ALREADY_ADDED_PRODUCT(HttpStatus.CONFLICT, false, 6002, "이미 장바구니에 존재하는 상품입니다"),
+
     ;
 
 

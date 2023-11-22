@@ -18,7 +18,7 @@ public class BaseExceptionHandler {
     @ExceptionHandler(BaseException.class)
     protected ResponseEntity<?> BaseError(BaseException e) {
         // BaseException의 BaseResponseStatus를 가져와서 BaseResponse를 만들어서 return해줌
-        BaseResponse response = new BaseResponse(e.getMessage());
+        BaseResponse response = new BaseResponse(e.getStatus());
         log.info("BaseException: " + e.getStatus().getMessage());
         return new ResponseEntity<>(response, response.httpStatus());
     }
