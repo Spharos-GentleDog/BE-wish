@@ -3,6 +3,7 @@ package egenius.wish.domain.cart.application;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import egenius.wish.domain.cart.dtos.ProductDto;
 import egenius.wish.domain.cart.dtos.in.AddProductInDto;
+import egenius.wish.domain.cart.dtos.in.UpdateCheckedInDto;
 import egenius.wish.domain.cart.dtos.out.GetCartOutDto;
 import egenius.wish.domain.cart.entity.ProductInCart;
 import egenius.wish.domain.cart.infrastructure.CartRepository;
@@ -29,6 +30,7 @@ public class CartServiceImpl implements CartService{
      * Cart
      * 1. 장바구니에 상품 추가
      * 2. 장바구니 조회
+     * 3. 체크 선택/취소
      */
 
     // 1. 장바구니에 상품 추가
@@ -45,6 +47,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GetCartOutDto getCart(String userEmail) {
         // userEmail로 cart 조회
         List<ProductInCart> productInCart = cartRepository.findByUserEmail(userEmail);
@@ -56,9 +59,10 @@ public class CartServiceImpl implements CartService{
 
             // productDto 생성
             ProductDto productDto = ProductDto.builder()
-                    .product_detail_id(product.getProductDetailId())
+                    .productDetailId(product.getProductDetailId())
                     .count(product.getCount())
-                    .chekced(product.getChecked())
+                    .checked(product.getChecked())
+                    .productInCartId(product.getId())
                     .build();
 
             // 브랜드 이름에 맞춰서 저장
@@ -75,6 +79,19 @@ public class CartServiceImpl implements CartService{
 
         // GetCartOutDto 생성 및 return
         return new GetCartOutDto(byBrand);
+    }
+
+    // 3. 체크 선택/취소
+    @Override
+    public void updateChecked(UpdateCheckedInDto inDto) {
+        // inDto의 모든 상품의 check 상태를 변경
+        inDto.getChangedCheckedList().forEach(product ->{
+            // id로 조회
+            ProductInCart productInCart = cartRepository.findById(product.getProductInCartId())
+                    .orElseThrow(()-> new BaseException(BaseResponseStatus.NO_DATA));
+            // check 업데이트
+            productInCart.updateChecked(product.getChecked());
+        });
     }
 
 

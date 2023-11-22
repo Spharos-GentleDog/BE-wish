@@ -1,15 +1,15 @@
 package egenius.wish.domain.cart.dtos;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@ToString
-public class ProductDto {
+public class CheckedDto {
     private Long productInCartId;
-    private Long productDetailId;
-    private Integer count;
     private Boolean checked;
 }

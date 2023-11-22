@@ -30,4 +30,11 @@ public class ProductInCart extends BaseTimeEntity {
 
     @Column(name = "brand_name")
     private String brandName;
+
+    /**
+     * 1. 체크 상태 업데이트
+     */
+    public void updateChecked(Boolean checked) {
+        this.checked = checked;
+    }
 }
