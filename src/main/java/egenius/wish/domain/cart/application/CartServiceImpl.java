@@ -32,6 +32,7 @@ public class CartServiceImpl implements CartService{
      * 2. 장바구니 조회
      * 3. 체크 선택/취소
      * 4. 장바구니 상품 삭제
+     * 5. 장바구니 상품 수량 변경
      */
 
     // 1. 장바구니에 상품 추가
@@ -99,5 +100,13 @@ public class CartServiceImpl implements CartService{
     @Override
     public void deleteProduct(Long productInCartId) {
         cartRepository.deleteById(productInCartId);
+    }
+
+    // 5. 장바구니 상품 수량 변경
+    @Override
+    public void updateProductCount(Long productInCartId, Integer count) {
+        ProductInCart product = cartRepository.findById(productInCartId)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_DATA));
+        product.updateCount(count);
     }
 }

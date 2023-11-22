@@ -24,4 +24,7 @@ public interface CartService {
 
     // 4. 장바구니 상품 삭제
     void deleteProduct(Long productInCartId);
+
+    // 5. 장바구니 상품 수량 변경
+    void updateProductCount(Long productInCartId, Integer count);
 }
