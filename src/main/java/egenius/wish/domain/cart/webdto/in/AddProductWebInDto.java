@@ -8,7 +8,5 @@ public class AddProductWebInDto {
 
     private Integer count;
 
-    private Boolean checked;
-
     private String brandName;
 }

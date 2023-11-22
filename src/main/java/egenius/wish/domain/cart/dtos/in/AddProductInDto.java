@@ -14,7 +14,8 @@ public class AddProductInDto {
 
     private Integer count;
 
-    private Boolean checked;
+    @Builder.Default
+    private Boolean checked = true;
 
     private String brandName;
 
