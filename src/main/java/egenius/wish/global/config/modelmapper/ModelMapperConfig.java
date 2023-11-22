@@ -1,4 +1,4 @@
-package egenius.wish.global.modelmapper;
+package egenius.wish.global.config.modelmapper;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

@@ -1,4 +1,4 @@
-package egenius.wish.global.swagger;
+package egenius.wish.global.config.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springdoc.core.models.GroupedOpenApi;
