@@ -1,4 +1,4 @@
-package egenius.wish.global.querydsl;
+package egenius.wish.global.config.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
