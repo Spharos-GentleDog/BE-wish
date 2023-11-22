@@ -24,6 +24,7 @@ public class CartController {
      * 1. 장바구니에 상품 추가
      * 2. 장바구니 조회
      * 3. 체크 선택/취소
+     * 4. 장바구니 상품 삭제
      */
 
 
@@ -50,5 +51,13 @@ public class CartController {
         cartService.updateChecked(inDto);
         return new BaseResponse<>();
     }
+
+    // 4. 장바구니 상품 삭제
+    @DeleteMapping("/{productInCartId}")
+    public BaseResponse<?> deleteProduct(@PathVariable Long productInCartId) {
+        cartService.deleteProduct(productInCartId);
+        return new BaseResponse<>();
+    }
+
 
 }
