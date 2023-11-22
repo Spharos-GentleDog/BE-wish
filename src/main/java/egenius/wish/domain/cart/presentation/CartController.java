@@ -6,6 +6,7 @@ import egenius.wish.domain.cart.dtos.in.UpdateCheckedInDto;
 import egenius.wish.domain.cart.dtos.out.GetCartOutDto;
 import egenius.wish.domain.cart.webdto.in.AddProductWebInDto;
 import egenius.wish.domain.cart.webdto.in.UpdateCheckedWebInDto;
+import egenius.wish.domain.cart.webdto.in.UpdateProductCountWebInDto;
 import egenius.wish.domain.cart.webdto.out.GetCartWebOutDto;
 import egenius.wish.global.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class CartController {
      * 1. 장바구니에 상품 추가
      * 2. 장바구니 조회
      * 3. 체크 선택/취소
+     * 4. 장바구니 상품 삭제
+     * 5. 장바구니 상품 수량 변경
      */
 
 
@@ -50,5 +53,22 @@ public class CartController {
         cartService.updateChecked(inDto);
         return new BaseResponse<>();
     }
+
+    // 4. 장바구니 상품 삭제
+    @DeleteMapping("/{productInCartId}")
+    public BaseResponse<?> deleteProduct(@PathVariable Long productInCartId) {
+        cartService.deleteProduct(productInCartId);
+        return new BaseResponse<>();
+    }
+
+    // 5. 장바구니 상품 수량 변경
+    @PutMapping("/{productInCartId}")
+    public BaseResponse<?> updateProductCount(
+            @PathVariable Long productInCartId,
+            @RequestBody UpdateProductCountWebInDto webInDto) {
+        cartService.updateProductCount(productInCartId, webInDto.getCount());
+        return new BaseResponse<>();
+    }
+
 
 }

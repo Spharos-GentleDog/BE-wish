@@ -21,4 +21,10 @@ public interface CartService {
 
     // 3. 체크 선택/취소
     void updateChecked(UpdateCheckedInDto inDto);
+
+    // 4. 장바구니 상품 삭제
+    void deleteProduct(Long productInCartId);
+
+    // 5. 장바구니 상품 수량 변경
+    void updateProductCount(Long productInCartId, Integer count);
 }
