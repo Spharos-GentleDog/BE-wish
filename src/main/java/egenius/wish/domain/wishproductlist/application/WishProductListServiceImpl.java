@@ -4,6 +4,8 @@ import egenius.wish.domain.wishproductlist.dtos.out.GetWishProductOutDto;
 import egenius.wish.domain.wishproductlist.dtos.out.IsWishOutDto;
 import egenius.wish.domain.wishproductlist.entity.WishProductList;
 import egenius.wish.domain.wishproductlist.infrastructure.WishProductListRepository;
+import egenius.wish.global.common.exception.BaseException;
+import egenius.wish.global.common.response.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,10 @@ public class WishProductListServiceImpl implements WishProductListService{
     // 1. 상품 찜하기
     @Override
     public void pickProduct(String userEmail, Long productId) {
+        // 중복확인 -> 중복된다면 에러 던짐
+        if (wishProductListRepository.existsByUserEmailAndProductId(userEmail, productId) == true) {
+            throw new BaseException(BaseResponseStatus.ALREADY_ADDED_WISH_PRODUCT);
+        }
         // 상품 생성
         WishProductList product = WishProductList.builder()
                 .userEmail(userEmail)
