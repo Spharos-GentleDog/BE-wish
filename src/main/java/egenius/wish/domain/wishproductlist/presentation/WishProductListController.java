@@ -49,9 +49,9 @@ public class WishProductListController {
     }
 
     // 4. 해당 상품 찜 확인
-    @GetMapping("/{wishProductId}")
-    public BaseResponse<?> isWish(@RequestHeader String userEmail, @PathVariable Long wishProductId) {
-        IsWishOutDto outDto = wishProductListService.isWish(userEmail, wishProductId);
+    @GetMapping("/{productId}")
+    public BaseResponse<?> isWish(@RequestHeader String userEmail, @PathVariable Long productId) {
+        IsWishOutDto outDto = wishProductListService.isWish(userEmail, productId);
         IsWishWebOutDto webOutDto = modelMapper.map(outDto, IsWishWebOutDto.class);
         return new BaseResponse<>(webOutDto);
     }
