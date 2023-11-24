@@ -1,11 +1,8 @@
 package egenius.wish.domain.wishproductlist.application;
 
 import egenius.wish.domain.wishproductlist.dtos.out.GetWishProductOutDto;
-import egenius.wish.domain.wishproductlist.dtos.out.IsWishOutDto;
 import egenius.wish.domain.wishproductlist.entity.WishProductList;
 import egenius.wish.domain.wishproductlist.infrastructure.WishProductListRepository;
-import egenius.wish.global.common.exception.BaseException;
-import egenius.wish.global.common.response.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -60,16 +57,8 @@ public class WishProductListServiceImpl implements WishProductListService{
 
     // 3. 해당 상품 찜 확인
     @Override
-    public IsWishOutDto isWish(String userEmail, Long productId) {
-        Optional<WishProductList> product = wishProductListRepository.findByUserEmailAndProductId(userEmail, productId);
-        Long wishProductId = null;
+    public Boolean isWish(String userEmail, Long productId) {
         // product가 존재한다면, wishProductId를 반환한다
-        if (product.isPresent() == true) {
-            wishProductId = product.get().getWishProductListId();
-            log.info("찜한상품입니다: 상품id= {}, 이메일={}", product.get().getProductId(), userEmail);
-        } else {
-            log.info("X: productId={}, email={}",productId,userEmail);
-        }
-        return new IsWishOutDto(wishProductId);
+        return wishProductListRepository.existsByUserEmailAndProductId(userEmail, productId);
     }
 }
