@@ -24,26 +24,30 @@ public class WishProductListServiceImpl implements WishProductListService{
     private final ModelMapper modelMapper;
 
     /**
-     * 1. 상품 찜하기
+     * 1. 상품 찜하기/찜취소하기
      * 2. 찜한 상품 조회하기
-     * 3. 찜한 상품 삭제하기
-     * 4. 해당 상품 찜 확인
+     * 3. 해당 상품 찜 확인
      */
 
-    // 1. 상품 찜하기
+    // 1. 상품 찜하기/찜취소하기
     @Override
-    public void pickProduct(String userEmail, Long productId) {
-        // 중복확인 -> 중복된다면 에러 던짐
-        if (wishProductListRepository.existsByUserEmailAndProductId(userEmail, productId) == true) {
-            throw new BaseException(BaseResponseStatus.ALREADY_ADDED_WISH_PRODUCT);
+    public Boolean pickProduct(String userEmail, Long productId) {
+        // 조회
+        Optional<WishProductList> result = wishProductListRepository.findByUserEmailAndProductId(userEmail, productId);
+        // 존재한다면 삭제
+        if (result.isPresent() == true) {
+            wishProductListRepository.delete(result.get());
+            return false;
         }
-        // 상품 생성
-        WishProductList product = WishProductList.builder()
-                .userEmail(userEmail)
-                .productId(productId)
-                .build();
-        // 저장
-        wishProductListRepository.save(product);
+        // 없다면 생성
+        else {
+            WishProductList product = WishProductList.builder()
+                    .userEmail(userEmail)
+                    .productId(productId)
+                    .build();
+            wishProductListRepository.save(product);
+            return true;
+        }
     }
 
     // 2. 찜한 상품 조회하기
@@ -54,14 +58,7 @@ public class WishProductListServiceImpl implements WishProductListService{
         return new GetWishProductOutDto(list);
     }
 
-    // 3. 찜한 상품 삭제하기
-    @Override
-    public void deleteWishProduct(Long wishProductId) {
-        // 상품 삭제
-        wishProductListRepository.deleteByWishProductListId(wishProductId);
-    }
-
-    // 4. 해당 상품 찜 확인
+    // 3. 해당 상품 찜 확인
     @Override
     public IsWishOutDto isWish(String userEmail, Long productId) {
         Optional<WishProductList> product = wishProductListRepository.findByUserEmailAndProductId(userEmail, productId);

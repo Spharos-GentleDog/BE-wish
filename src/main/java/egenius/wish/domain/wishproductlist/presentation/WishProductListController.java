@@ -20,17 +20,16 @@ public class WishProductListController {
     private final ModelMapper modelMapper;
 
     /**
-     * 1. 상품 찜하기
+     * 1. 상품 찜하기/찜취소하기
      * 2. 찜한 상품 조회하기
-     * 3. 찜한 상품 삭제하기
-     * 4. 해당 상품 찜 확인
+     * 3. 해당 상품 찜 확인
      */
 
-    // 1. 상품 찜하기
+    // 1. 상품 찜하기/찜취소하기
     @PostMapping("")
     public BaseResponse<?> pickProduct(@RequestHeader String userEmail, @RequestBody PickProductWebInDto webInDto) {
-        wishProductListService.pickProduct(userEmail, webInDto.getProductId());
-        return new BaseResponse<>();
+        Boolean status = wishProductListService.pickProduct(userEmail, webInDto.getProductId());
+        return new BaseResponse<>(status);
     }
 
     // 2. 찜한 상품 조회하기
@@ -41,14 +40,8 @@ public class WishProductListController {
         return new BaseResponse<>(wetOutDto);
     }
 
-    // 3. 찜한 상품 삭제하기
-    @DeleteMapping("/{wishProductId}")
-    public BaseResponse<?> deleteProduct(@PathVariable Long wishProductId) {
-        wishProductListService.deleteWishProduct(wishProductId);
-        return new BaseResponse<>();
-    }
 
-    // 4. 해당 상품 찜 확인
+    // 3. 해당 상품 찜 확인
     @GetMapping("/{productId}")
     public BaseResponse<?> isWish(@RequestHeader String userEmail, @PathVariable Long productId) {
         IsWishOutDto outDto = wishProductListService.isWish(userEmail, productId);
