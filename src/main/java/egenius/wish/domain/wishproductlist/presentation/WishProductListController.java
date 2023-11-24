@@ -2,10 +2,8 @@ package egenius.wish.domain.wishproductlist.presentation;
 
 import egenius.wish.domain.wishproductlist.application.WishProductListService;
 import egenius.wish.domain.wishproductlist.dtos.out.GetWishProductOutDto;
-import egenius.wish.domain.wishproductlist.dtos.out.IsWishOutDto;
 import egenius.wish.domain.wishproductlist.webdto.in.PickProductWebInDto;
 import egenius.wish.domain.wishproductlist.webdto.out.GetWishProductWetOutDto;
-import egenius.wish.domain.wishproductlist.webdto.out.IsWishWebOutDto;
 import egenius.wish.global.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -44,9 +42,8 @@ public class WishProductListController {
     // 3. 해당 상품 찜 확인
     @GetMapping("/{productId}")
     public BaseResponse<?> isWish(@RequestHeader String userEmail, @PathVariable Long productId) {
-        IsWishOutDto outDto = wishProductListService.isWish(userEmail, productId);
-        IsWishWebOutDto webOutDto = modelMapper.map(outDto, IsWishWebOutDto.class);
-        return new BaseResponse<>(webOutDto);
+        Boolean result = wishProductListService.isWish(userEmail, productId);
+        return new BaseResponse<>(result);
     }
 
 }

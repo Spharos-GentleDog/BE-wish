@@ -1,7 +1,6 @@
 package egenius.wish.domain.wishproductlist.application;
 
 import egenius.wish.domain.wishproductlist.dtos.out.GetWishProductOutDto;
-import egenius.wish.domain.wishproductlist.dtos.out.IsWishOutDto;
 
 public interface WishProductListService {
     /**
@@ -17,5 +16,5 @@ public interface WishProductListService {
     GetWishProductOutDto getWishProductList(String userEmail);
 
     // 3. 해당 상품 찜 확인
-    IsWishOutDto isWish(String userEmail, Long productId);
+    Boolean isWish(String userEmail, Long productId);
 }
