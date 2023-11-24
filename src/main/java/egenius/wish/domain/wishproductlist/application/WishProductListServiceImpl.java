@@ -7,6 +7,7 @@ import egenius.wish.domain.wishproductlist.infrastructure.WishProductListReposit
 import egenius.wish.global.common.exception.BaseException;
 import egenius.wish.global.common.response.BaseResponseStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class WishProductListServiceImpl implements WishProductListService{
     private final WishProductListRepository wishProductListRepository;
     private final ModelMapper modelMapper;
@@ -67,6 +69,9 @@ public class WishProductListServiceImpl implements WishProductListService{
         // product가 존재한다면, wishProductId를 반환한다
         if (product.isPresent() == true) {
             wishProductId = product.get().getWishProductListId();
+            log.info("찜한상품입니다: 상품id= {}, 이메일={}", product.get().getProductId(), userEmail);
+        } else {
+            log.info("X: {}", product.get());
         }
         return new IsWishOutDto(wishProductId);
     }
