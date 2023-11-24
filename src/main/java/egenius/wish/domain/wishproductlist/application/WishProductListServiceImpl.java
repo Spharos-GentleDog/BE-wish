@@ -71,7 +71,7 @@ public class WishProductListServiceImpl implements WishProductListService{
             wishProductId = product.get().getWishProductListId();
             log.info("찜한상품입니다: 상품id= {}, 이메일={}", product.get().getProductId(), userEmail);
         } else {
-            log.info("X: {}", product.get());
+            log.info("X: productId={}, email={}",productId,userEmail);
         }
         return new IsWishOutDto(wishProductId);
     }
