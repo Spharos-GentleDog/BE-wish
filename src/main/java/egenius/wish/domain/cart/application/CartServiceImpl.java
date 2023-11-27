@@ -5,6 +5,7 @@ import egenius.wish.domain.cart.dtos.ProductDto;
 import egenius.wish.domain.cart.dtos.in.AddProductInDto;
 import egenius.wish.domain.cart.dtos.in.UpdateCheckedInDto;
 import egenius.wish.domain.cart.dtos.out.GetCartOutDto;
+import egenius.wish.domain.cart.dtos.out.GetCheckedCartOutDto;
 import egenius.wish.domain.cart.entity.ProductInCart;
 import egenius.wish.domain.cart.infrastructure.CartRepository;
 import egenius.wish.global.common.exception.BaseException;
@@ -33,6 +34,7 @@ public class CartServiceImpl implements CartService{
      * 3. 체크 선택/취소
      * 4. 장바구니 상품 삭제
      * 5. 장바구니 상품 수량 변경
+     * 6. 장바구니 선택한 물품만 조회
      */
 
     // 1. 장바구니에 상품 추가
@@ -48,6 +50,7 @@ public class CartServiceImpl implements CartService{
         cartRepository.save(productInCart);
     }
 
+    // 2. 장바구니 조회
     @Override
     @Transactional(readOnly = true)
     public GetCartOutDto getCart(String userEmail) {
@@ -108,5 +111,42 @@ public class CartServiceImpl implements CartService{
         ProductInCart product = cartRepository.findById(productInCartId)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.NO_DATA));
         product.updateCount(count);
+    }
+
+    // 6. 장바구니 선택한 물품만 조회
+    @Override
+    @Transactional(readOnly = true)
+    public GetCheckedCartOutDto getCheckedCart(String userEmail) {
+        // userEmail로 cart 조회
+        log.info("userEmail: {}", userEmail);
+        List<ProductInCart> productInCart = cartRepository.findByUserEmailAndChecked(userEmail, true);
+        log.info("result: {}", productInCart);
+        // 상품을 브랜드별로 분류 -> key:브랜드이름, value: 상품dto리스트
+        TreeMap<String, List<ProductDto>> byBrand = new TreeMap<>();
+        productInCart.forEach(product ->{
+            String brandName = product.getBrandName();
+
+            // productDto 생성
+            ProductDto productDto = ProductDto.builder()
+                    .productDetailId(product.getProductDetailId())
+                    .count(product.getCount())
+                    .checked(product.getChecked())
+                    .productInCartId(product.getId())
+                    .build();
+
+            // 브랜드 이름에 맞춰서 저장
+            List<ProductDto> productDtoList;
+            if (byBrand.containsKey(brandName) == true) {
+                productDtoList = byBrand.get(brandName);
+                productDtoList.add(productDto);
+            } else {
+                productDtoList = new ArrayList<>();
+                productDtoList.add(productDto);
+            }
+            byBrand.put(brandName, productDtoList);
+        });
+
+        // GetCheckedCartOutDto 생성 및 return
+        return new GetCheckedCartOutDto(byBrand);
     }
 }

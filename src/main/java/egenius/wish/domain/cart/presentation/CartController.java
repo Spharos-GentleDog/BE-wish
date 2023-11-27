@@ -4,10 +4,12 @@ import egenius.wish.domain.cart.application.CartService;
 import egenius.wish.domain.cart.dtos.in.AddProductInDto;
 import egenius.wish.domain.cart.dtos.in.UpdateCheckedInDto;
 import egenius.wish.domain.cart.dtos.out.GetCartOutDto;
+import egenius.wish.domain.cart.dtos.out.GetCheckedCartOutDto;
 import egenius.wish.domain.cart.webdto.in.AddProductWebInDto;
 import egenius.wish.domain.cart.webdto.in.UpdateCheckedWebInDto;
 import egenius.wish.domain.cart.webdto.in.UpdateProductCountWebInDto;
 import egenius.wish.domain.cart.webdto.out.GetCartWebOutDto;
+import egenius.wish.domain.cart.webdto.out.GetCheckedCartWebOutDto;
 import egenius.wish.global.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,7 @@ public class CartController {
      * 3. 체크 선택/취소
      * 4. 장바구니 상품 삭제
      * 5. 장바구니 상품 수량 변경
+     * 6. 장바구니 선택한 물품만 조회
      */
 
 
@@ -70,5 +73,12 @@ public class CartController {
         return new BaseResponse<>();
     }
 
+    // 6. 장바구니 선택한 물품만 조회
+    @GetMapping("/checked")
+    public BaseResponse<?> getCheckedProduct(@RequestHeader String userEmail) {
+        GetCheckedCartOutDto outDto = cartService.getCheckedCart(userEmail);
+        GetCheckedCartWebOutDto webOutDto = modelMapper.map(outDto, GetCheckedCartWebOutDto.class);
+        return new BaseResponse<>(webOutDto);
+    }
 
 }
