@@ -9,9 +9,12 @@ import java.util.TreeMap;
 @Getter
 public class GetCheckedCartOutDto {
     // 브랜드별로 정렬된 List
-    TreeMap<String, List<ProductDto>> checkedCart = new TreeMap<>();
+    private TreeMap<String, List<ProductDto>> checkedCart = new TreeMap<>();
 
-    public GetCheckedCartOutDto(TreeMap<String, List<ProductDto>> cart) {
+    private Integer totalCount;
+
+    public GetCheckedCartOutDto(TreeMap<String, List<ProductDto>> cart, Integer totalCount) {
         this.checkedCart = cart;
+        this.totalCount = totalCount;
     }
 }

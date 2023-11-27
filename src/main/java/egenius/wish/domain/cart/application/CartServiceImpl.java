@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -118,13 +119,15 @@ public class CartServiceImpl implements CartService{
     @Transactional(readOnly = true)
     public GetCheckedCartOutDto getCheckedCart(String userEmail) {
         // userEmail로 cart 조회
-        log.info("userEmail: {}", userEmail);
         List<ProductInCart> productInCart = cartRepository.findByUserEmailAndChecked(userEmail, true);
-        log.info("result: {}", productInCart);
+        AtomicInteger totalCount = new AtomicInteger(0);
+
         // 상품을 브랜드별로 분류 -> key:브랜드이름, value: 상품dto리스트
         TreeMap<String, List<ProductDto>> byBrand = new TreeMap<>();
         productInCart.forEach(product ->{
             String brandName = product.getBrandName();
+            // totalCount 증가
+            totalCount.addAndGet(product.getCount());
 
             // productDto 생성
             ProductDto productDto = ProductDto.builder()
@@ -147,6 +150,6 @@ public class CartServiceImpl implements CartService{
         });
 
         // GetCheckedCartOutDto 생성 및 return
-        return new GetCheckedCartOutDto(byBrand);
+        return new GetCheckedCartOutDto(byBrand, totalCount.get());
     }
 }

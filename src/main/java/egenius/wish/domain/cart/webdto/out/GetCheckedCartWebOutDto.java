@@ -16,6 +16,8 @@ import java.util.TreeMap;
 public class GetCheckedCartWebOutDto {
     // 브랜드별로 정렬된 List
     @Builder.Default
-    TreeMap<String, List<ProductDto>> checkedCart = new TreeMap<>();
+    private TreeMap<String, List<ProductDto>> checkedCart = new TreeMap<>();
+
+    private Integer totalCount;
 
 }

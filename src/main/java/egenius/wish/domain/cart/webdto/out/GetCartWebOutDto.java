@@ -17,5 +17,5 @@ import java.util.TreeMap;
 public class GetCartWebOutDto {
     // 브랜드별로 정렬된 List
     @Builder.Default
-    TreeMap<String, List<ProductDto>> cart = new TreeMap<>();
+    private TreeMap<String, List<ProductDto>> cart = new TreeMap<>();
 }
